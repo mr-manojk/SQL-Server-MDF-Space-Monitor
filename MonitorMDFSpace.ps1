@@ -1,14 +1,12 @@
-# --- CONFIG — edit these values -----------------------------------------------
-$SqlServer     = "YOUR_SERVER\SQLEXPRESS"  # e.g. "localhost" or "MYPC\SQLEXPRESS"
-$SqlDatabase   = "YOUR_DATABASE"           # e.g. "AdventureWorks"
-$ThresholdMB   = 900                       # Alert when free space drops below this
-$SmtpServer    = "smtp.office365.com"      # Your SMTP server
-$SmtpPort      = 587
-$SmtpUser      = "sender@yourdomain.com"   # Sender email (with SMTP auth)
-$SmtpPassword  = "YOUR_APP_PASSWORD"       # App password (not your login password)
-$ToEmail       = "recipient@yourdomain.com" # Who receives the alert
-$FromEmail     = "sender@yourdomain.com"   # Must match $SmtpUser for most providers
-# --------------------------------------------------------------------------------
+# --- Load private config (excluded from git) ----------------------------------
+$configPath = Join-Path $PSScriptRoot "config.ps1"
+if (-not (Test-Path $configPath)) {
+    Write-Error "config.ps1 not found at: $configPath`nCopy config.ps1 from the repo template and fill in your values."
+    Read-Host "Press Enter to exit"
+    exit 1
+}
+. $configPath
+# ------------------------------------------------------------------------------
 
 $Query = @"
 SELECT
@@ -125,10 +123,10 @@ try {
             $smtpClient.Credentials = New-Object System.Net.NetworkCredential($SmtpUser, $SmtpPassword)
 
             $mailMessage = New-Object System.Net.Mail.MailMessage
-            $mailMessage.From    = $FromEmail
+            $mailMessage.From       = $FromEmail
             $mailMessage.To.Add($ToEmail)
-            $mailMessage.Subject = $subject
-            $mailMessage.Body    = $body
+            $mailMessage.Subject    = $subject
+            $mailMessage.Body       = $body
             $mailMessage.IsBodyHtml = $true
 
             $smtpClient.Send($mailMessage)

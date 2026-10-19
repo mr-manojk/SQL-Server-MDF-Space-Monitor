@@ -41,7 +41,7 @@ The alert email uses a fully inline-CSS, Outlook-safe HTML template with an oran
 ### 1. Clone or download
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/sql-mdf-monitor.git
+git clone https://github.com/mr-manojk/SQL-Server-MDF-Space-Monitor.git
 ```
 
 ### 2. Fill in your credentials

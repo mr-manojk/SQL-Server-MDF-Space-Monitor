@@ -44,14 +44,14 @@ The alert email uses a fully inline-CSS, Outlook-safe HTML template with an oran
 git clone https://github.com/YOUR_USERNAME/sql-mdf-monitor.git
 ```
 
-### 2. Edit the config block
+### 2. Fill in your credentials
 
-Open `MonitorMDFSpace.ps1` and fill in the top section:
+Copy `config.ps1` and fill in your real values — this file is excluded from git via `.gitignore` so credentials never get committed:
 
 ```powershell
 $SqlServer    = "YOUR_SERVER\SQLEXPRESS"
 $SqlDatabase  = "YOUR_DATABASE"
-$ThresholdMB  = 900                        # alert below this many MB free
+$ThresholdMB  = 900                         # alert below this many MB free
 $SmtpServer   = "smtp.office365.com"
 $SmtpPort     = 587
 $SmtpUser     = "sender@yourdomain.com"
@@ -60,7 +60,7 @@ $ToEmail      = "recipient@yourdomain.com"
 $FromEmail    = "sender@yourdomain.com"
 ```
 
-> **Never commit real credentials.** Use environment variables or a separate config file excluded via `.gitignore` for production use.
+> `config.ps1` is listed in `.gitignore` — it will never be staged or pushed. `MonitorMDFSpace.ps1` contains no credentials and is safe to commit as-is.
 
 ### 3. Test manually
 
@@ -138,7 +138,9 @@ Add a `config.ps1` (with real values) to `.gitignore` and dot-source it:
 
 ```
 sql-mdf-monitor/
-├── MonitorMDFSpace.ps1   # Main script
+├── MonitorMDFSpace.ps1   # Main script (safe to commit — no credentials)
+├── config.ps1            # Your private credentials (git-ignored, never committed)
+├── .gitignore            # Excludes config.ps1
 └── README.md
 ```
 
